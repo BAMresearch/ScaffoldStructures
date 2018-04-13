@@ -141,14 +141,25 @@ class LeftPanel(wx.Panel):
     def build_gui(self):
 
 
-        self.autores_densidade=wx.ComboBox(self, -1, "Schwarz_P", choices=("Schwarz_P",
-                                                                            "Schwarz_D","Gyroid","Neovius","iWP",'P_W_Hybrid','Skeletal_1','Skeletal_2','Skeletal_3','Skeletal_4',
-                                                                          'Ufunc'),
-                                    style=wx.CB_READONLY)
+        self.autores_densidade=wx.ComboBox(self, -1, "Schwarz_P", 
+                choices=(
+                "Schwarz_P",
+                "Schwarz_D",
+                "Gyroid",
+                "Neovius",
+                "iWP",
+                'P_W_Hybrid',
+                'Skeletal_1',
+                'Skeletal_2',
+                'Skeletal_3',
+                'Skeletal_4',
+                'Ufunc'
+                ),
+                style=wx.CB_READONLY)
 
         
         
-        self.editfunct = wx.TextCtrl(self, size=(240, -1))
+        self.editfunct = wx.TextCtrl(self, size=(360, -1))
         
 
        
@@ -486,7 +497,7 @@ class JanelaPrincipal(wx.Frame):
 
 
     def SairPrograma(self,event):
-         dial=wx.MessageDialog(None, 'Pretende sair do Programa ?',u'Questão', wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
+         dial=wx.MessageDialog(None, 'Do you want to close the program?',u'Questão', wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
          ret=dial.ShowModal()
          if ret==wx.ID_YES:
              self.Destroy()
@@ -497,7 +508,7 @@ class JanelaPrincipal(wx.Frame):
         dlg = wx.FileDialog(
             self, message="Save file as ...", 
             defaultDir=self.currentDirectory, 
-            defaultFile="", wildcard=wildcard, style=wx.SAVE
+            defaultFile="", wildcard=wildcard, style=wx.FD_SAVE
             )
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
