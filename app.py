@@ -141,25 +141,14 @@ class LeftPanel(wx.Panel):
     def build_gui(self):
 
 
-        self.scaffold_structures=wx.ComboBox(self, -1, "Schwarz_P", 
-                choices=(
-                "Schwarz_P",
-                "Schwarz_D",
-                "Gyroid",
-                "Neovius",
-                "iWP",
-                'P_W_Hybrid',
-                'Skeletal_1',
-                'Skeletal_2',
-                'Skeletal_3',
-                'Skeletal_4',
-                'Ufunc'
+        self.scaffold_structures=wx.ComboBox(self, -1, 'Schwarz_P', 
+                choices=('Schwarz_P','Schwarz_D','Gyroid','Neovius','iWP','P_W_Hybrid','Skeletal_1','Skeletal_2','Skeletal_3','Skeletal_4','Ufunc'
                 ),
                 style=wx.CB_READONLY)
 
         
         
-        self.editfunct = wx.TextCtrl(self, size=(360, -1))
+        self.editfunct = wx.TextCtrl(self, size=(240, -1))
         
 
        
@@ -204,7 +193,7 @@ class LeftPanel(wx.Panel):
         b_sizer.Add(self.spacing_value_y, 0, wx.EXPAND)
 
         b_sizer.Add(wx.StaticText(self, -1, u"Element Number Z-direction") , 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.porosity_value__z, 0, wx.EXPAND)
+        b_sizer.Add(self.porosity_value_z, 0, wx.EXPAND)
         b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in Z direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_z, 0, wx.EXPAND)
 
@@ -321,7 +310,7 @@ class FrontView(wx.Panel):
         
         
         self.init_actor()
-        self.adicionaeixos()        
+        self.add_axes()        
         self.draw_surface()
         self.renderer.ResetCamera()
 
@@ -347,7 +336,7 @@ class FrontView(wx.Panel):
     def _draw_surface(self, pubsub_evt):
         tipo, tam, spacing,hole_size, ufunc = pubsub_evt.data
 
-        self._draw_surface(tipo, tam, spacing,hole_size, ufunc)
+        self.draw_surface(tipo, tam, spacing,hole_size, ufunc)
         
 
     def draw_surface(self, tipo='Schwarz_P', tam=None,
@@ -413,7 +402,7 @@ class FrontView(wx.Panel):
         sx, sy, sz = self.spacing
         z, y, x = M.shape
 
-        vtotal = x*sx * y*sy * z*sz
+        v_total = x*sx * y*sy * z*sz
         #v_wall = ((M > -0.1) & (M < 0.1)).sum() * sx*sy*sz
         v_wall = M.sum() * sx*sy*sz
 
@@ -446,7 +435,7 @@ class FrontView(wx.Panel):
 
 
 
-    def save_model_stl(self, path):
+    def write_model_stl(self, path):
         write = vtk.vtkSTLWriter()
         write.SetInputData(self.mapper.GetInput())
         write.SetFileTypeToBinary()
@@ -485,14 +474,14 @@ class Main_Window(wx.Frame):
         menu=wx.Menu()
         
         
-        Save_menu=menu.Append(-1, "&Save ")
-        Exit_menu=menu.Append(-1, "&Exit")
+        save_menu=menu.Append(-1, "&Save ")
+        exit_menu=menu.Append(-1, "&Exit")
         MenuBar.Append(menu, "File")
 
         self.SetMenuBar(MenuBar)
 
         # How to treat the events...
-        self.Bind(wx.EVT_MENU, self.ExitProgram, Exit_menu)
+        self.Bind(wx.EVT_MENU, self.ExitProgram, exit_menu)
         self.Bind(wx.EVT_MENU, self.save_model_stl, save_menu)
 
 
@@ -515,7 +504,7 @@ class Main_Window(wx.Frame):
             )
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            self.RightPanel.FrontView.save_model_stl(path)
+            self.RightPanel.FrontView.write_model_stl(path)
         dlg.Destroy()
         
 
