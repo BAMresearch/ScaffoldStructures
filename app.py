@@ -129,7 +129,7 @@ class LeftPanel(wx.Panel):
         
         self.Show()
 
-        # function to write error message
+        # funcão para escrever o erro
         log_path = os.path.join('.' , 'vtkoutput.txt')
         fow = vtk.vtkFileOutputWindow()
         fow.SetFileName(log_path)
@@ -141,10 +141,10 @@ class LeftPanel(wx.Panel):
     def build_gui(self):
 
 
-        self.scaffold_structures=wx.ComboBox(self, -1, 'Schwarz_P', 
-                choices=('Schwarz_P','Schwarz_D','Gyroid','Neovius','iWP','P_W_Hybrid','Skeletal_1','Skeletal_2','Skeletal_3','Skeletal_4','Ufunc'
-                ),
-                style=wx.CB_READONLY)
+        self.choose_scaffold=wx.ComboBox(self, -1, "Schwarz_P", choices=("Schwarz_P",
+                                                                            "Schwarz_D","Gyroid","Neovius","iWP",'P_W_Hybrid','Skeletal_1','Skeletal_2','Skeletal_3','Skeletal_4',
+                                                                          'Ufunc'),
+                                    style=wx.CB_READONLY)
 
         
         
@@ -160,13 +160,13 @@ class LeftPanel(wx.Panel):
         self.porosity_value_y = FloatSliderText(self, -1, 'Y', 6, 0, 100, 1)
         self.porosity_value_z = FloatSliderText(self, -1, 'Z', 6, 0, 100, 1)
         
-        self.spacing_value_x = FloatSliderText(self, -1, 'X_spacing', 1, 0.01, 1, 0.01)
-        self.spacing_value_y = FloatSliderText(self, -1, 'Y_spacing', 1, 0.01, 1, 0.01)
-        self.spacing_value_z = FloatSliderText(self, -1, 'Z_spacing', 1, 0.01, 1, 0.01)
-        self.hole_dimension_value1=FloatSliderText(self, -1, ' + Hole size', 0.1, 0.1, 1, 0.1)
-        self.hole_dimension_value2=FloatSliderText(self, -1, ' - Hole size', 1, 0.1, 1, 0.1)
+        self.spacing_value_x = FloatSliderText(self, -1, 'X_spacing', 0.2, 0.01, 1, 0.01)
+        self.spacing_value_y = FloatSliderText(self, -1, 'Y_spacing', 0.2, 0.01, 1, 0.01)
+        self.spacing_value_z = FloatSliderText(self, -1, 'Z_spacing', 0.2, 0.01, 1, 0.01)
+        self.hole_dimension_value1=FloatSliderText(self, -1, ' + Hole size', 0.3, 0.1, 1, 0.1)
+        self.hole_dimension_value2=FloatSliderText(self, -1, ' - Hole size', 0.3, 0.1, 1, 0.1)
 
-        self.porosity_value=wx.StaticText(self, -1, "")
+        self.v_porosity=wx.StaticText(self, -1, "")
         self.Lx=wx.StaticText(self, -1, "")
         self.Ly=wx.StaticText(self, -1, "")
         self.Lz=wx.StaticText(self, -1, "")
@@ -176,7 +176,7 @@ class LeftPanel(wx.Panel):
 
 
         b_sizer.Add(wx.StaticText(self, -1, u"Type of Minimal Surface") , 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.scaffold_structures, 0)
+        b_sizer.Add(self.choose_scaffold, 0)
         
         b_sizer.Add(wx.StaticText(self, -1,"Enter your function (use sin, cos,x,y,z,+,-,*):"), 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.editfunct, 0)
@@ -186,23 +186,20 @@ class LeftPanel(wx.Panel):
         b_sizer.Add(self.porosity_value_x, 0, wx.EXPAND)
         b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in X direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_x, 0, wx.EXPAND)
-
         b_sizer.Add(wx.StaticText(self, -1, u"Element Number Y-direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.porosity_value_y, 0, wx.EXPAND)
         b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in Y direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_y, 0, wx.EXPAND)
-
         b_sizer.Add(wx.StaticText(self, -1, u"Element Number Z-direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.porosity_value_z, 0, wx.EXPAND)
         b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in Z direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_z, 0, wx.EXPAND)
-
         b_sizer.Add(wx.StaticText(self, -1, u" Hole Size") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.hole_dimension_value1, 0, wx.EXPAND)
         b_sizer.Add(self.hole_dimension_value2, 0, wx.EXPAND)
         b_sizer.Add(self.Reset_scaffold, 0)
         
-        b_sizer.Add(self.porosity_value, 0,wx.EXPAND)
+        b_sizer.Add(self.v_porosity, 0,wx.EXPAND)
         b_sizer.Add(self.Lx, 0,wx.EXPAND)
         b_sizer.Add(self.Ly, 0,wx.EXPAND)
         b_sizer.Add(self.Lz, 0,wx.EXPAND)
@@ -216,15 +213,15 @@ class LeftPanel(wx.Panel):
         self.SetSizer(hbox)
 
     def __bind_events_wx(self):
-        self.Reset_scaffold.Bind(wx.EVT_BUTTON,self.read_slider_values)
+        self.Reset_scaffold.Bind(wx.EVT_BUTTON,self.renderer)
         
 
 
     def __bind_events_pb(self):
         pub.subscribe(self._show_info, 'show info')
 
-    def read_slider_values(self, evt):
-        tipo=self.scaffold_structures.GetValue()
+    def renderer(self, evt):
+        tipo=self.choose_scaffold.GetValue()
         X=self.porosity_value_x.GetValue()
         Y=self.porosity_value_y.GetValue()
         Z=self.porosity_value_z.GetValue()
@@ -248,13 +245,13 @@ class LeftPanel(wx.Panel):
 
         #print tam, spacing, tipo
         
-        pub.sendMessage('Recalculating structure', (tipo, tam, spacing,hole_size,
+        pub.sendMessage('Recalculating surface', (tipo, tam, spacing,hole_size,
                                               ufunc))
         pub.sendMessage('Calculating porosity')
 
     def _show_info(self, pubsub_evt):
         p, lx, ly, lz = pubsub_evt.data
-        self.porosity_value.SetLabel(u'Porosity: %.5f %%' % p)
+        self.v_porosity.SetLabel(u'Porosity: %.5f %%' % p)
         self.Lx.SetLabel(u'Length X-direction: %.5f µm' % lx)
         self.Ly.SetLabel(u'Length Y-direction: %.5f µm' % ly)
         self.Lz.SetLabel(u'Length Z-direction: %.5f µm' % lz)
@@ -267,12 +264,12 @@ class PanelRight(wx.Panel):
     def __init__(self, parent, id, style):
         wx.Panel.__init__(self, parent, id,style=style)
 
-        self.FrontView=FrontView(self, id=-1, style=wx.BORDER_SUNKEN)
+        self.frontview=FrontView(self, id=-1, style=wx.BORDER_SUNKEN)
         #self.visaotop=VisaoTop(self, id=-1, style=wx.BORDER_SUNKEN)
 
 
         vbox=wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.FrontView, 1, wx.EXPAND)
+        vbox.Add(self.frontview, 1, wx.EXPAND)
         #vbox.Add(self.visaotop, 1, wx.EXPAND)
         
 
@@ -315,7 +312,7 @@ class FrontView(wx.Panel):
         self.renderer.ResetCamera()
 
         pub.subscribe(self._draw_surface, 'Recalculating surface')
-        pub.subscribe(self._calculating_porosity, 'Calculating porosity')
+        pub.subscribe(self._calculate_porosity, 'Calculating porosity')
 
     def init_actor(self):
         self.mapper = vtk.vtkPolyDataMapper()
@@ -324,7 +321,7 @@ class FrontView(wx.Panel):
         self.SurfaceActor=vtk.vtkActor()
         self.SurfaceActor.SetMapper(self.mapper)
         #ultimo para adionar actor
-        #Example
+        #exemplo
         self.renderer.AddActor(self.SurfaceActor)
 
         self.renderer.ResetCamera()
@@ -344,9 +341,9 @@ class FrontView(wx.Panel):
         if tam is None:
             tam = 6, 6, 6
         if spacing is None:
-            spacing = 1.0, 1.0, 1.0
+            spacing = 0.2, 0.2, 0.2
         if hole_size is None:
-            hole_size=0.1,0.3
+            hole_size=0.2,0.2
         #print hole_size
             
         M = fun_schwarzP(tipo,tam,spacing,hole_size, ufunc)
@@ -387,8 +384,8 @@ class FrontView(wx.Panel):
         self.mapper.SetInputData(subdiv.GetOutput())
         self.Interactor.Render()
 
-    def _calculating_porosity(self, pubsub_evt):
-        p = self.calculating_porosity()
+    def _calculate_porosity(self, pubsub_evt):
+        p = self.calculate_porosity()
         lx, ly, lz = self.measure_distance()
         pub.sendMessage('show info', (p, lx, ly, lz))
         
@@ -397,18 +394,18 @@ class FrontView(wx.Panel):
 
         
 
-    def calculating_porosity(self):
+    def calculate_porosity(self):
         M = self.M
         sx, sy, sz = self.spacing
         z, y, x = M.shape
 
         v_total = x*sx * y*sy * z*sz
-        #v_wall = ((M > -0.1) & (M < 0.1)).sum() * sx*sy*sz
-        v_wall = M.sum() * sx*sy*sz
+        #v_walls = ((M > -0.1) & (M < 0.1)).sum() * sx*sy*sz
+        v_walls = M.sum() * sx*sy*sz
 
-        v_poros = v_total - v_wall
+        vporos = v_total - v_walls
 
-        return 100.0*v_poros/v_total
+        return 100.0*vporos/v_total
 
         
 
@@ -446,7 +443,7 @@ class FrontView(wx.Panel):
 
 
 
-class Main_Window(wx.Frame):
+class MainWindow(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, id, title, size=(700, 650))
 
@@ -468,28 +465,28 @@ class Main_Window(wx.Frame):
         
         self.SetSizer(hbox)
 
-        #Create menu
+        #criar menu
 
         MenuBar=wx.MenuBar()
         menu=wx.Menu()
         
         
-        save_menu=menu.Append(-1, "&Save ")
-        exit_menu=menu.Append(-1, "&Exit")
+        save=menu.Append(-1, "&Save ")
+        close=menu.Append(-1, "&Exit")
         MenuBar.Append(menu, "File")
 
         self.SetMenuBar(MenuBar)
 
-        # How to treat the events...
-        self.Bind(wx.EVT_MENU, self.ExitProgram, exit_menu)
-        self.Bind(wx.EVT_MENU, self.save_model_stl, save_menu)
+        # tratar os eventos
+        self.Bind(wx.EVT_MENU, self.close_program, close)
+        self.Bind(wx.EVT_MENU, self.save_model_stl, save)
 
 
         self.Show()
 
 
-    def ExitProgram(self,event):
-         dial=wx.MessageDialog(None, 'Do you want to close the program?',u'Question', wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
+    def close_program(self,event):
+         dial=wx.MessageDialog(None, 'Do you really want to close this program?',u'Question', wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
          ret=dial.ShowModal()
          if ret==wx.ID_YES:
              self.Destroy()
@@ -500,11 +497,11 @@ class Main_Window(wx.Frame):
         dlg = wx.FileDialog(
             self, message="Save file as ...", 
             defaultDir=self.currentDirectory, 
-            defaultFile="", wildcard=wildcard, style=wx.FD_SAVE
+            defaultFile="", wildcard=wildcard, style=wx.SAVE
             )
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
-            self.RightPanel.FrontView.write_model_stl(path)
+            self.RightPanel.frontview.write_model_stl(path)
         dlg.Destroy()
         
 
@@ -512,6 +509,6 @@ class Main_Window(wx.Frame):
 
 if __name__ == '__main__':
     app = wx.App(0)
-    w = Main_Window(None, -1, 'Interface Scaffold ')
+    w = MainWindow(None, -1, 'Interface Scaffold ')
     w.Show()
     app.MainLoop()
