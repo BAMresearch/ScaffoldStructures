@@ -175,26 +175,26 @@ class LeftPanel(wx.Panel):
         b_sizer = wx.BoxSizer(wx.VERTICAL)
 
 
-        b_sizer.Add(wx.StaticText(self, -1, u"Type of Minimal Surface") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Type of Minimal Surface") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.choose_scaffold, 0)
         
         b_sizer.Add(wx.StaticText(self, -1,"Enter your function (use sin, cos,x,y,z,+,-,*):"), 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.editfunct, 0)
 
         
-        b_sizer.Add(wx.StaticText(self, -1, u"Element Number X-direction") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Element Number X-direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.porosity_value_x, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in X direction") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Size of spacing between each element in X direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_x, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, u"Element Number Y-direction") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Element Number Y-direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.porosity_value_y, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in Y direction") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Size of spacing between each element in Y direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_y, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, u"Element Number Z-direction") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Element Number Z-direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.porosity_value_z, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, u"Size of spacing between each element in Z direction") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Size of spacing between each element in Z direction") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_z, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, u" Hole Size") , 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, " Hole Size") , 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.hole_dimension_value1, 0, wx.EXPAND)
         b_sizer.Add(self.hole_dimension_value2, 0, wx.EXPAND)
         b_sizer.Add(self.Reset_scaffold, 0)
@@ -251,10 +251,10 @@ class LeftPanel(wx.Panel):
 
     def _show_info(self, pubsub_evt):
         p, lx, ly, lz = pubsub_evt.data
-        self.v_porosity.SetLabel(u'Porosity: %.5f %%' % p)
-        self.Lx.SetLabel(u'Length X-direction: %.5f µm' % lx)
-        self.Ly.SetLabel(u'Length Y-direction: %.5f µm' % ly)
-        self.Lz.SetLabel(u'Length Z-direction: %.5f µm' % lz)
+        self.v_porosity.SetLabel('Porosity: %.5f %%' % p)
+        self.Lx.SetLabel('Length X-direction: %.5f µm' % lx)
+        self.Ly.SetLabel('Length Y-direction: %.5f µm' % ly)
+        self.Lz.SetLabel('Length Z-direction: %.5f µm' % lz)
         
 
 
@@ -299,7 +299,7 @@ class FrontView(wx.Panel):
         
 
         hbox=wx.BoxSizer(wx.VERTICAL)
-        hbox.Add(wx.StaticText(self,-1, u'Global Structure of Scaffold'))
+        hbox.Add(wx.StaticText(self,-1, 'Global Structure of Scaffold'))
         
         
         hbox.Add(self.Interactor,1, wx.EXPAND)
@@ -486,7 +486,7 @@ class MainWindow(wx.Frame):
 
 
     def close_program(self,event):
-         dial=wx.MessageDialog(None, 'Do you really want to close this program?',u'Question', wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
+         dial=wx.MessageDialog(None, 'Do you really want to close this program?','Question', wx.YES_NO |wx.NO_DEFAULT | wx.ICON_QUESTION)
          ret=dial.ShowModal()
          if ret==wx.ID_YES:
              self.Destroy()
