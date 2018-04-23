@@ -497,7 +497,7 @@ class MainWindow(wx.Frame):
         dlg = wx.FileDialog(
             self, message="Save file as ...", 
             defaultDir=self.currentDirectory, 
-            defaultFile="", wildcard=wildcard, style=wx.SAVE
+            defaultFile="", wildcard=wildcard, style=wx.FD_SAVE
             )
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
