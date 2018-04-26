@@ -2,15 +2,13 @@
 import wx
 import sys
 import os
-from math import *
 import vtk
 from vtk.wx.wxVTKRenderWindowInteractor import wxVTKRenderWindowInteractor
-from wx.lib.pubsub import setuparg1
-from wx.lib.pubsub import pub
+#from pubsub import setuparg1
+from pubsub import pub
 import numpy
 from numpy import cos, sin,ogrid,pi
 from vtk.util import numpy_support
-from numpy import*
 
 #from slider_text import SliderText
 from FloatSliderText import FloatSliderText
@@ -242,15 +240,16 @@ class LeftPanel(wx.Panel):
         tam = X, Y, Z
         spacing = sX, sY, sZ
         hole_size= neg,pos
+        
+        msg = (tipo, tam, spacing, hole_size, ufunc)
 
         #print tam, spacing, tipo
         
-        pub.sendMessage('Recalculating surface', (tipo, tam, spacing,hole_size,
-                                              ufunc))
+        pub.sendMessage('Recalculating surface', msg = (tipo, tam, spacing, hole_size, ufunc))
         pub.sendMessage('Calculating porosity')
 
-    def _show_info(self, pubsub_evt):
-        p, lx, ly, lz = pubsub_evt.data
+    def _show_info(self, msg3):
+        p, lx, ly, lz = msg3
         self.v_porosity.SetLabel('Porosity: %.5f %%' % p)
         self.Lx.SetLabel('Length X-direction: %.5f µm' % lx)
         self.Ly.SetLabel('Length Y-direction: %.5f µm' % ly)
@@ -330,8 +329,8 @@ class FrontView(wx.Panel):
 
         
 
-    def _draw_surface(self, pubsub_evt):
-        tipo, tam, spacing,hole_size, ufunc = pubsub_evt.data
+    def _draw_surface(self, msg):
+        tipo, tam, spacing, hole_size, ufunc = msg
 
         self.draw_surface(tipo, tam, spacing,hole_size, ufunc)
         
@@ -384,10 +383,11 @@ class FrontView(wx.Panel):
         self.mapper.SetInputData(subdiv.GetOutput())
         self.Interactor.Render()
 
-    def _calculate_porosity(self, pubsub_evt):
+    def _calculate_porosity(self):
         p = self.calculate_porosity()
         lx, ly, lz = self.measure_distance()
-        pub.sendMessage('show info', (p, lx, ly, lz))
+        
+        pub.sendMessage('show info', msg3 = (p, lx, ly, lz))
         
         
         
