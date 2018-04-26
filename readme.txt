@@ -1,4 +1,13 @@
-Just run app.py 
+This app was originally developed by J.C. Dinis at Centre for Rapid and Sustainable Product Development, Polytechnic Institute of Leiria, Marinha Grande, Portugal.
+
+The software is open-source and available under GPL2.0.
+The software was tested with Python 3.5 under Ubuntu 16.04. 
+
+Open the folder in Terminal and run it with: python3 app.py
+
+
+I plan to provide working executables for Linux and Windows in the future. 
+
 
 
 
