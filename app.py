@@ -65,18 +65,33 @@ def fun_schwarzP(type_surface,tam,spacing,hole_size, ufunc=None):
 
     #print type_surface
     if type_surface=='Schwarz_P':
-        f=cos(x)+cos(y)+ cos(z)
+        f = cos(x)+cos(y)+ cos(z)
     elif type_surface=='Schwarz_D':
-        f=sin(x)*sin(y)*sin(z)+sin(x)*cos(y)*cos(z)+cos(x)*sin(y)*cos(z)+cos(x)*cos(y)*sin(z)
-
+        f = sin(x)*sin(y)*sin(z)+sin(x)*cos(y)*cos(z)+cos(x)*sin(y)*cos(z)+cos(x)*cos(y)*sin(z)
     elif type_surface=="Gyroid":
-        f=cos (x) * sin(y) + cos (y) * sin (z) + cos (z) * sin (x)
+        f = cos (x) * sin(y) + cos (y) * sin (z) + cos (z) * sin (x)
+    elif type_surface=="F-RD":
+        cx = cos (2*x)
+        cy = cos (2*y)
+        cz = cos (2*z)
+        f = 4 * cos (x) * cos (y) * cos (z) - (cx * cy + cx * cz + cy * cz)
     elif type_surface=="Neovius":
-        f=3*(cos (x) + cos (y) + cos (z)) + 4* cos (x) * cos (y) * cos (z)
+        f = 3*(cos (x) + cos (y) + cos (z)) + 4* cos (x) * cos (y) * cos (z)
     elif type_surface=="iWP":
         f=cos (x) * cos (y) + cos (y) * cos (z) + cos (z) * cos (x) - cos (x) * cos (y) * cos (z)
     elif type_surface=='P_W_Hybrid':
         f=4*(cos (x) * cos (y) + cos (y) * cos (z) + cos (z) * cos (x)) -3* cos (x) * cos (y) * cos (z)+2.4
+    elif type_surface=="L-Type":
+        cxx = cos(2*x)
+        cyy = cos(2*y)
+        czz = cos(2*z)
+        cx = cos(x)
+        cy = cos(y)
+        cz = cos(z)
+        sx = sin (x)
+        sy = sin (y)
+        sz = sin (z)
+        f = 0.5 * (sin (2*x) * cy * sz + sin (2*y) * cz * sx  + sin (2*z) * cx * sy) - 0.5 * (cxx * cyy + cyy * czz + czz * cxx) + 0.15     
     elif type_surface=='Skeletal_1':
         cx = cos(x)
         cy = cos(y)
@@ -90,17 +105,21 @@ def fun_schwarzP(type_surface,tam,spacing,hole_size, ufunc=None):
         yo = y - pi/4
         zo = z - pi/4
         f =10.0*(sin(xo) * sin(yo) * sin(zo)+ sin(xo) * cos(yo) * cos(zo)+ cos(xo) * sin(yo) * cos(zo)+ cos(xo) * cos(yo) * sin(zo))-  0.7*(cx + cy + cz)- 11.0
-    elif type_surface=='Skeletal_3':
+    elif type_surface=='Tubular_G':
         cx = cos(2*x)
         cy = cos(2*y)
         cz = cos(2*z)
         f = 10.0*(cos(x) * sin(y) + cos(y) * sin(z) + cos(z) * sin(x))-  0.5*(cx*cy + cy*cz + cz*cx)- 14.0
-    elif type_surface=='Skeletal_4':
+    elif type_surface=='Tubular_P':
         cx = cos(x)
         cy = cos(y)
         cz = cos(z)
         f = 10.0*(cx + cy + cz) -  5.1*(cx*cy + cy*cz + cz*cx) - 14.6
-        
+    elif type_surface=="I2-Y":
+        cx = cos(2*x)
+        cy = cos(2*y)
+        cz = cos(2*z)
+        f = -2 * (sin (2*x) * cos (y) * sin (z) + sin (x) * sin (2*y) * cos (z) + cos (x) * sin (y) * sin (2*z)) + cx * cy + cy * cz + cx * cz         
     elif type_surface=='Ufunc':
         f = eval(ufunc)
         
@@ -139,9 +158,22 @@ class LeftPanel(wx.Panel):
     def build_gui(self):
 
 
-        self.choose_scaffold=wx.ComboBox(self, -1, "Schwarz_P", choices=("Schwarz_P",
-                                                                            "Schwarz_D","Gyroid","Neovius","iWP",'P_W_Hybrid','Skeletal_1','Skeletal_2','Skeletal_3','Skeletal_4',
-                                                                          'Ufunc'),
+        self.choose_scaffold=wx.ComboBox(self, -1, "Schwarz_P",\
+                                         choices=(
+                                                 "Schwarz_P",\
+                                                 "Schwarz_D",\
+                                                 "Gyroid",\
+                                                 "F-RD",\
+                                                 "Neovius",\
+                                                 "iWP",\
+                                                 'P_W_Hybrid',\
+                                                 "L-Type",\
+                                                 'Skeletal_1',\
+                                                 'Skeletal_2',\
+                                                 'Tubular_G',\
+                                                 'Tubular_P',\
+                                                 "I2-Y",\
+                                                 'Ufunc'),
                                     style=wx.CB_READONLY)
 
         
