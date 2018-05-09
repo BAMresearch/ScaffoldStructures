@@ -119,7 +119,9 @@ def fun_schwarzP(type_surface,tam,spacing,hole_size, ufunc=None):
         cx = cos(2*x)
         cy = cos(2*y)
         cz = cos(2*z)
-        f = -2 * (sin (2*x) * cos (y) * sin (z) + sin (x) * sin (2*y) * cos (z) + cos (x) * sin (y) * sin (2*z)) + cx * cy + cy * cz + cx * cz         
+        f = -2 * (sin (2*x) * cos (y) * sin (z) + sin (x) * sin (2*y) * cos (z) + cos (x) * sin (y) * sin (2*z)) + cx * cy + cy * cz + cx * cz
+    elif type_surface=="G'":
+        f = 0.8 * (sin (4*x) * sin (2*z) * cos (2*y) + sin (4*y) * sin (2*x) * cos (2*z) + sin (4*z) * sin (2*y) * cos (2*x)) - 0.2 * (cos (4*x) * cos (4*y) + cos (4*y) * cos (4*z) + cos (4*z) * cos (4*x))
     elif type_surface=='Ufunc':
         f = eval(ufunc)
         
@@ -173,6 +175,7 @@ class LeftPanel(wx.Panel):
                                                  'Tubular_G',\
                                                  'Tubular_P',\
                                                  "I2-Y",\
+                                                 "G'",\
                                                  'Ufunc'),
                                     style=wx.CB_READONLY)
 
@@ -283,9 +286,9 @@ class LeftPanel(wx.Panel):
     def _show_info(self, msg3):
         p, lx, ly, lz = msg3
         self.v_porosity.SetLabel('Porosity: %.5f %%' % p)
-        self.Lx.SetLabel('Length X-direction: %.5f µm' % lx)
-        self.Ly.SetLabel('Length Y-direction: %.5f µm' % ly)
-        self.Lz.SetLabel('Length Z-direction: %.5f µm' % lz)
+        self.Lx.SetLabel('Length X-direction: %.5f units' % lx)
+        self.Ly.SetLabel('Length Y-direction: %.5f units' % ly)
+        self.Lz.SetLabel('Length Z-direction: %.5f units' % lz)
         
 
 
@@ -379,7 +382,7 @@ class FrontView(wx.Panel):
             
         M = fun_schwarzP(tipo,tam,spacing,hole_size, ufunc)
 
-        f = h5py.File("/tmp/camboja_ufunc.hdf5", "w")
+        f = h5py.File("1.hdf5", "w")
         f['data'] = M
         f['spacing'] = numpy.array(spacing)
         
