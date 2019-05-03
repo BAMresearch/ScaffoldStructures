@@ -13,6 +13,7 @@ import vtk
 import h5py
 import numpy
 
+
 from vtk.wx.wxVTKRenderWindowInteractor import wxVTKRenderWindowInteractor
 from vtk.util import numpy_support
 from pubsub import pub
@@ -28,11 +29,11 @@ from FloatSliderText import FloatSliderText
 def to_vtk(n_array, spacing, slice_number=0, orientation='AXIAL'):
 
     """
-    This function defines orientation or the TPMS. 
+    This function defines orientation or the TPMS.
     Starts vtk.
     """
 
-    
+
     try:
         dz, dy, dx = n_array.shape
     except ValueError:
@@ -72,7 +73,7 @@ def to_vtk(n_array, spacing, slice_number=0, orientation='AXIAL'):
 
 def fun_schwarzP(type_surface, tam, spacing, hole_size):
 
-    """ 
+    """
     Definition of the different TPMS.
     """
 
@@ -205,11 +206,11 @@ class LeftPanel(wx.Panel):
 
 
     def build_gui(self):
-        
+
         """
         Defines the GUI and sliders with wx
         """
-        
+
         self.choose_scaffold = wx.ComboBox(self, -1, "Schwarz_P",\
                                          choices=(
                                              "Schwarz_P",\
@@ -233,13 +234,13 @@ class LeftPanel(wx.Panel):
 
         self.Reset_scaffold = wx.Button(self, -1, "Rendering")
 
-        self.porosity_value_x = FloatSliderText(self, -1, 'X', 6, 0, 100, 1)
-        self.porosity_value_y = FloatSliderText(self, -1, 'Y', 6, 0, 100, 1)
-        self.porosity_value_z = FloatSliderText(self, -1, 'Z', 6, 0, 100, 1)
+        self.porosity_value_x = FloatSliderText(self, -1, 'X', 2*pi, 2*pi, 8*pi, pi/2)
+        self.porosity_value_y = FloatSliderText(self, -1, 'Y', 2*pi, 2*pi, 8*pi, pi/2)
+        self.porosity_value_z = FloatSliderText(self, -1, 'Z', 2*pi, 2*pi, 8*pi, pi/2)
 
-        self.spacing_value_x = FloatSliderText(self, -1, 'X_spacing', 0.1, 0.01, 1, 0.01)
-        self.spacing_value_y = FloatSliderText(self, -1, 'Y_spacing', 0.1, 0.01, 1, 0.01)
-        self.spacing_value_z = FloatSliderText(self, -1, 'Z_spacing', 0.1, 0.01, 1, 0.01)
+        self.spacing_value_x = FloatSliderText(self, -1, 'X_spacing', 0.1, 0.02, 0.5, 0.02)
+        self.spacing_value_y = FloatSliderText(self, -1, 'Y_spacing', 0.1, 0.02, 0.5, 0.02)
+        self.spacing_value_z = FloatSliderText(self, -1, 'Z_spacing', 0.1, 0.02, 0.5, 0.02)
         self.hole_dimension_value1 = FloatSliderText(self, -1, ' + Hole size', 0.3, 0.1, 1, 0.1)
         self.hole_dimension_value2 = FloatSliderText(self, -1, ' - Hole size', 0.3, 0.1, 1, 0.1)
 
@@ -255,7 +256,7 @@ class LeftPanel(wx.Panel):
         b_sizer.Add(wx.StaticText(self, -1, "Type of Minimal Surface"), 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.choose_scaffold, 0)
 
-        
+
 
         b_sizer.Add(wx.StaticText(self, -1, "Element Number X-direction"), 0, wx.EXPAND | wx.ALL, 10)
         b_sizer.Add(self.porosity_value_x, 0, wx.EXPAND)
@@ -306,41 +307,30 @@ class LeftPanel(wx.Panel):
         pos = self.hole_dimension_value1.GetValue()
         neg = self.hole_dimension_value2.GetValue()
 
-        
-
-
-
-
-
 
         tam = X, Y, Z
         spacing = sX, sY, sZ
         hole_size = neg, pos
 
-        msg = (tipo, tam, spacing, hole_size)
-
-        #print tam, spacing, tipo
 
         pub.sendMessage('Recalculating surface', msg=(tipo, tam, spacing, hole_size))
         pub.sendMessage('Calculating porosity')
 
     def _show_info(self, msg3):
         p, lx, ly, lz = msg3
-        self.v_porosity.SetLabel('Porosity: %.5f %%' % p)
-        self.Lx.SetLabel('Length X-direction: %.5f units' % lx)
-        self.Ly.SetLabel('Length Y-direction: %.5f units' % ly)
-        self.Lz.SetLabel('Length Z-direction: %.5f units' % lz)
+        self.v_porosity.SetLabel('Porosity: %.2f %%' % p)
+        self.Lx.SetLabel('Length X-direction: %.2f units' % lx)
+        self.Ly.SetLabel('Length Y-direction: %.2f units' % ly)
+        self.Lz.SetLabel('Length Z-direction: %.2f units' % lz)
 
 
 
 
 class PanelRight(wx.Panel):
-    
+
     """
     Builds the image panel that shows the TPMS
     """
-    
-    
     
     def __init__(self, parent, id, style):
         wx.Panel.__init__(self, parent, id, style=style)
@@ -420,11 +410,11 @@ class FrontView(wx.Panel):
     def draw_surface(self, tipo='Schwarz_P', tam=None,
                      spacing=None, hole_size=None):
         if tam is None:
-            tam = 6, 6, 6
+            tam = 2*pi, 2*pi, 2*pi
         if spacing is None:
-            spacing = 0.1, 0.1, 0.1
+            spacing = 0.2, 0.2, 0.2
         if hole_size is None:
-            hole_size = 0.1, 0.1
+            hole_size = 0.3, 0.3
         #print hole_size
 
         M = fun_schwarzP(tipo, tam, spacing, hole_size)

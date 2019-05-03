@@ -16,7 +16,7 @@ class FloatSliderText(wx.Panel):
     def build_gui(self):
         self.sliderctrl = FloatSlider.FloatSlider(self, -1, self.value,
                                                   self.min, self.max, self.res)
-        self.textbox = wx.TextCtrl(self, -1, "%f" % self.value)
+        self.textbox = wx.TextCtrl(self, -1, "%.2f" % self.value, style=wx.TE_READONLY)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(wx.StaticText(self, -1, self.caption) , 0, wx.EXPAND)
@@ -37,7 +37,7 @@ class FloatSliderText(wx.Panel):
 
     def do_slider(self, evt):
         self.value =  self.sliderctrl.GetValue()
-        self.textbox.SetValue("%f" % self.value)
+        self.textbox.SetValue("%.2f" % self.value)
         evt.Skip()
 
     def GetValue(self):
