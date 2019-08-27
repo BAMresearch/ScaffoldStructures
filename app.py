@@ -25,7 +25,6 @@ from FloatSliderText import FloatSliderText
 
 
 
-
 def to_vtk(n_array, spacing, slice_number=0, orientation='AXIAL'):
 
     """
@@ -234,15 +233,21 @@ class LeftPanel(wx.Panel):
 
         self.Reset_scaffold = wx.Button(self, -1, "Rendering")
 
-        self.porosity_value_x = FloatSliderText(self, -1, 'X', 2*pi, 2*pi, 8*pi, pi/2)
-        self.porosity_value_y = FloatSliderText(self, -1, 'Y', 2*pi, 2*pi, 8*pi, pi/2)
-        self.porosity_value_z = FloatSliderText(self, -1, 'Z', 2*pi, 2*pi, 8*pi, pi/2)
-
-        self.spacing_value_x = FloatSliderText(self, -1, 'X_spacing', 0.1, 0.02, 0.5, 0.02)
-        self.spacing_value_y = FloatSliderText(self, -1, 'Y_spacing', 0.1, 0.02, 0.5, 0.02)
-        self.spacing_value_z = FloatSliderText(self, -1, 'Z_spacing', 0.1, 0.02, 0.5, 0.02)
-        self.hole_dimension_value1 = FloatSliderText(self, -1, ' + Hole size', 0.3, 0.1, 1, 0.1)
-        self.hole_dimension_value2 = FloatSliderText(self, -1, ' - Hole size', 0.3, 0.1, 1, 0.1)
+        self.porosity_value_x = wx.SpinCtrl(self, -1, '')
+        self.porosity_value_x.SetRange(1, 20)
+        self.porosity_value_x.SetValue(1)
+        
+        self.porosity_value_y = wx.SpinCtrl(self, -1, '')
+        self.porosity_value_y.SetRange(1, 20)
+        self.porosity_value_y.SetValue(1)
+        
+        self.porosity_value_z = wx.SpinCtrl(self, -1, '')
+        self.porosity_value_z.SetRange(1, 20)
+        self.porosity_value_z.SetValue(1)
+        
+        self.spacing_value_x = FloatSliderText(self, -1, '', 0.1, 0.02, 0.5, 0.02)
+        self.hole_dimension_value1 = FloatSliderText(self, -1, 'Positive Direction', 0.3, 0.1, 1, 0.1)
+        self.hole_dimension_value2 = FloatSliderText(self, -1, 'Negative Direction', 0.3, 0.1, 1, 0.1)
 
         self.v_porosity = wx.StaticText(self, -1, "")
         self.Lx = wx.StaticText(self, -1, "")
@@ -253,27 +258,23 @@ class LeftPanel(wx.Panel):
         b_sizer = wx.BoxSizer(wx.VERTICAL)
 
 
-        b_sizer.Add(wx.StaticText(self, -1, "Type of Minimal Surface"), 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.choose_scaffold, 0)
-
-
-
-        b_sizer.Add(wx.StaticText(self, -1, "Element Number X-direction"), 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.porosity_value_x, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, "Size of spacing between each element in X direction"), 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Type of Minimal Surface"), 0, wx.CENTRE | wx.ALL, 10)
+        b_sizer.Add(self.choose_scaffold, 0, wx.CENTRE)
+        b_sizer.Add(wx.StaticText(self, -1, "Number of primitive cells in X-direction"), 0, wx.CENTRE | wx.ALL, 10)
+        b_sizer.Add(self.porosity_value_x, 0, wx.CENTRE)
+        b_sizer.Add(wx.StaticText(self, -1, "Number of primitive cells in Y-direction"), 0, wx.CENTRE | wx.ALL, 10)
+        b_sizer.Add(self.porosity_value_y, 0, wx.CENTRE)
+        b_sizer.Add(wx.StaticText(self, -1, "Number of primitive cells in Z-direction"), 0, wx.CENTRE | wx.ALL, 10)
+        b_sizer.Add(self.porosity_value_z, 0, wx.CENTRE)
+        b_sizer.Add(wx.StaticText(self, -1, "Quality factor (lower is better)"), 0, wx.CENTRE | wx.ALL, 10)
         b_sizer.Add(self.spacing_value_x, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, "Element Number Y-direction"), 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.porosity_value_y, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, "Size of spacing between each element in Y direction"), 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.spacing_value_y, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, "Element Number Z-direction"), 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.porosity_value_z, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, "Size of spacing between each element in Z direction"), 0, wx.EXPAND | wx.ALL, 10)
-        b_sizer.Add(self.spacing_value_z, 0, wx.EXPAND)
-        b_sizer.Add(wx.StaticText(self, -1, "Hole Size"), 0, wx.EXPAND | wx.ALL, 10)
+        b_sizer.Add(wx.StaticText(self, -1, "Wall Thickness"), 0, wx.CENTRE | wx.ALL, 10)
         b_sizer.Add(self.hole_dimension_value1, 0, wx.EXPAND)
         b_sizer.Add(self.hole_dimension_value2, 0, wx.EXPAND)
         b_sizer.Add(self.Reset_scaffold, 0)
+        
+        
+        
 
         b_sizer.Add(self.v_porosity, 0, wx.EXPAND)
         b_sizer.Add(self.Lx, 0, wx.EXPAND)
@@ -298,12 +299,12 @@ class LeftPanel(wx.Panel):
 
     def renderer(self, evt):
         tipo = self.choose_scaffold.GetValue()
-        X = self.porosity_value_x.GetValue()
-        Y = self.porosity_value_y.GetValue()
-        Z = self.porosity_value_z.GetValue()
+        X = 2 * pi * self.porosity_value_x.GetValue()
+        Y = 2 * pi * self.porosity_value_y.GetValue()
+        Z = 2 * pi * self.porosity_value_z.GetValue()
         sX = self.spacing_value_x.GetValue()
-        sY = self.spacing_value_y.GetValue()
-        sZ = self.spacing_value_z.GetValue()
+        sY = self.spacing_value_x.GetValue()
+        sZ = self.spacing_value_x.GetValue()
         pos = self.hole_dimension_value1.GetValue()
         neg = self.hole_dimension_value2.GetValue()
 
@@ -410,9 +411,9 @@ class FrontView(wx.Panel):
     def draw_surface(self, tipo='Schwarz_P', tam=None,
                      spacing=None, hole_size=None):
         if tam is None:
-            tam = 2*pi, 2*pi, 2*pi
+            tam = 4*pi, 4*pi, 4*pi
         if spacing is None:
-            spacing = 0.2, 0.2, 0.2
+            spacing = 0.1, 0.1, 0.1
         if hole_size is None:
             hole_size = 0.3, 0.3
         #print hole_size
