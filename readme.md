@@ -6,7 +6,7 @@ You can generate minimal surface structures in any desired dimension and save th
 
 ## How to run?
 
-You can find **an executable** in the release page here: https://github.com/Spanholz/ScaffoldStructures/releases/tag/v0.1-alpha
+You can find **an executable** in the release page here: https://github.com/Spanholz/ScaffoldStructures/releases/tag/v0.2-alpha
 
 The software was tested with Python 3.7 under Ubuntu 19.04. 
 
@@ -18,14 +18,14 @@ Needed packages are:
 - numpy
 - vtk
 - pypubsub
-- wx_py
+- wx
 
 ## Explanation of the sliders:
-- **Element number in X,Y,Z direction** - changes the number of unit cells, 2 pi are one unit cell
+- **Number of primitive cells in X,Y,Z direction** - changes the number of unit cells in each direction
 
-- **Size of spacing in X,Y,Z direction/X,Y,Z_spacing** - changes the surface quality of the structure, distorts the structure  if not changed evenly
+- **Quality factor** - changes the surface quality of the structure, lower values took longer to render
 
-- **Hole size +/-** - changes the thickness of the wall seen from the surface
+- **Wall thickness** - changes the thickness of the wall seen from the surface of the minimal surface structure
 
 
 
