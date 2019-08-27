@@ -10,9 +10,6 @@ You can find **an executable** in the release page here: https://github.com/Span
 
 The software was tested with Python 3.7 under Ubuntu 19.04. 
 
-You can use the following executable for Windows:
-https://sjtdelfs.de/nextcloud/index.php/s/ro5Fnwp6CWq6J7e
-
 Or open the folder in Terminal and run it with: `python app.py`
 Needed packages are:
 - numpy
