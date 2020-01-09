@@ -31,20 +31,20 @@ Needed packages are:
 
 Currently the following triply periodic minimal surfaces are available:
 
- - Schwarz P ![SchwarzP](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/SchwarzP.PNG)
- - Schwarz D ![SchwarzD](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/SchwarzD.PNG)
- - Gyroid ![F-RD](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/Gyroid.PNG)
- - F-RD ![F-RD](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/F-RD.PNG)
- - Neovius ![Neovius](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/Neovius.PNG)
- - iWP ![iWP](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/iWP.PNG)
- - L-Type ![L-Type](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/L-Type.PNG)
- - G' ![G'](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/G_prime.PNG)
- - Tubular G ![Tubular G](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/Tubular_G.png)
- - Tubular P ![Tubular P](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/Tubular_P.png)
- - P_W_Hybride ![P_W_Hybride](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/P_W_Hybrid.PNG)
- - I2-Y ![I2-Y](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/I2-Y.PNG) 
- - Skeletal 1 ![Skeletal 1](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/Skeletal_1.png)
- - Skeletal 2 ![Skelatal 2](https://github.com/Spanholz/ScaffoldStructures/blob/master/images/Skeletal_2.png)
+ - Schwarz P ![SchwarzP](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/SchwarzP.PNG)
+ - Schwarz D ![SchwarzD](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/SchwarzD.PNG)
+ - Gyroid ![F-RD](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/Gyroid.PNG)
+ - F-RD ![F-RD](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/F-RD.PNG)
+ - Neovius ![Neovius](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/Neovius.PNG)
+ - iWP ![iWP](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/iWP.PNG)
+ - L-Type ![L-Type](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/L-Type.PNG)
+ - G' ![G'](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/G_prime.PNG)
+ - Tubular G ![Tubular G](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/Tubular_G.png)
+ - Tubular P ![Tubular P](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/Tubular_P.png)
+ - P_W_Hybride ![P_W_Hybride](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/P_W_Hybrid.PNG)
+ - I2-Y ![I2-Y](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/I2-Y.PNG) 
+ - Skeletal 1 ![Skeletal 1](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/Skeletal_1.png)
+ - Skeletal 2 ![Skelatal 2](https://github.com/BAMresearch/ScaffoldStructures/blob/master/images/Skeletal_2.png)
 
 
 ## License
