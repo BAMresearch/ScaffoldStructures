@@ -1,5 +1,5 @@
 # Copyright (C) 2016 Jairson Dinis 
-# Copyright (C) 2018, 2019 Sven Fritzsche 
+# Copyright (C) 2018, 2019 Sven Fritzsche <sven.fritzsche@bam.de> - Bundesanstalt fuer Materialforschung und -pruefung
 # 
 #
 #
