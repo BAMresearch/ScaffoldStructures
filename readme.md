@@ -49,7 +49,7 @@ Currently the following triply periodic minimal surfaces are available:
 
 ## License
 
-This app was originally developed by J.C. Dinis at Centre for Rapid and Sustainable Product Development, Polytechnic Institute of Leiria, Marinha Grande, Portugal.
+This program was originally developed by J.C. Dinis at Centre for Rapid and Sustainable Product Development, Polytechnic Institute of Leiria, Marinha Grande, Portugal and the Renato Archer Information Technology Center – CTI, Campinas, São Paulo, Brazil.
 
 It is open-source and available under GNU GPLv2.0.
 
