@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Jairson Dinis 
+# Copyright (C) 2016 Jairson Dinis 
 # Copyright (C) 2018, 2019 Sven Fritzsche 
 # 
 #
