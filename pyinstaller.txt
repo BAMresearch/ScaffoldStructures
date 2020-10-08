@@ -1,0 +1,1 @@
+pyinstaller -y --hidden-import vtkmodules --hidden-import vtkmodules.all --hidden-import vtkmodules.util --hidden-import vtk.wx --hidden-import vtkmodules.util.numpy_support  ".\app.py"

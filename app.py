@@ -57,12 +57,12 @@ def to_vtk(n_array, spacing, slice_number=0, orientation='AXIAL'):
 
     if orientation == 'AXIAL':
         extent = (0, dx -1, 0, dy -1, slice_number, slice_number + dz - 1)
-    elif orientation == 'SAGITAL':
-        dx, dy, dz = dz, dx, dy
-        extent = (slice_number, slice_number + dx - 1, 0, dy - 1, 0, dz - 1)
-    elif orientation == 'CORONAL':
-        dx, dy, dz = dx, dz, dy
-        extent = (0, dx - 1, slice_number, slice_number + dy - 1, 0, dz - 1)
+    #elif orientation == 'SAGITAL':
+    #     dx, dy, dz = dz, dx, dy
+    #     extent = (slice_number, slice_number + dx - 1, 0, dy - 1, 0, dz - 1)
+    #elif orientation == 'CORONAL':
+    #     dx, dy, dz = dx, dz, dy
+    #     extent = (0, dx - 1, slice_number, slice_number + dy - 1, 0, dz - 1)
 
     # Generating the vtkImageData
     image = vtk.vtkImageData()
@@ -259,9 +259,9 @@ class LeftPanel(wx.Panel):
         self.porosity_value_z.SetRange(1, 20)
         self.porosity_value_z.SetValue(1)
         
-        self.spacing_value_x = FloatSliderText(self, -1, '', 0.1, 0.02, 0.5, 0.02)
-        self.hole_dimension_value1 = FloatSliderText(self, -1, 'Positive Direction', 0.3, 0.1, 1, 0.1)
-        self.hole_dimension_value2 = FloatSliderText(self, -1, 'Negative Direction', 0.3, 0.1, 1, 0.1)
+        self.spacing_value_x = FloatSliderText(self, -1, '', 0.2, 0.02, 0.5, 0.02)
+        self.hole_dimension_value1 = FloatSliderText(self, -1, 'Positive Direction', 0.3, 0.1, 1.1, 0.1)
+        self.hole_dimension_value2 = FloatSliderText(self, -1, 'Negative Direction', 0.3, 0.1, 1.1, 0.1)
 
         self.v_porosity = wx.StaticText(self, -1, "")
         self.Lx = wx.StaticText(self, -1, "")
@@ -427,7 +427,7 @@ class FrontView(wx.Panel):
         if tam is None:
             tam = 4*pi, 4*pi, 4*pi
         if spacing is None:
-            spacing = 0.1, 0.1, 0.1
+            spacing = 0.2, 0.2, 0.2
         if hole_size is None:
             hole_size = 0.3, 0.3
         #print hole_size
@@ -447,7 +447,7 @@ class FrontView(wx.Panel):
         surf = vtk.vtkMarchingCubes()
         surf.SetInputData(image)
         #surf.SetValue(0,0.5)
-        surf.SetValue(0, 0.02)
+        surf.SetValue(0, 0.1)
         surf.ComputeNormalsOn()
         surf.ComputeGradientsOn()
         surf.Update()
