@@ -7,8 +7,6 @@ You can generate minimal surface structures in any desired dimension and save th
 
 ## How to run?
 
-You can find **an executable** in the release page here: https://github.com/Spanholz/ScaffoldStructures/releases/tag/v0.2-alpha
-
 The software was tested with Python 3.7 under Ubuntu 19.04. 
 
 Or open the folder in Terminal and run it with: `python app.py`
