@@ -103,7 +103,7 @@ def fun_schwarzP(type_surface, tam, spacing, hole_size):
     #print type_surface
     if type_surface == 'Schwarz_P':
         f = cos(x) + cos(y) + cos(z)
-    elif type_surface == 'Schwarz_D':
+    elif type_surface == 'Schwarz D':
         f = sin(x) * sin(y) * sin(z) + sin(x) * cos(y) * cos(z) \
         + cos(x) * sin(y) * cos(z) + cos(x) * cos(y) * sin(z)
     elif type_surface == "Gyroid":
@@ -134,13 +134,13 @@ def fun_schwarzP(type_surface, tam, spacing, hole_size):
         f = 0.5*(sin(2*x) * cy * sz + sin(2*y) * cz * sx \
             + sin(2*z) * cx * sy) - \
             0.5 * (cxx * cyy + cyy * czz + czz * cxx) + 0.15
-    elif type_surface == 'Skeletal_1':
+    elif type_surface == 'Skeletal 1':
         cx = cos(x)
         cy = cos(y)
         cz = cos(z)
         f = 10.0*(cx*cy + cy*cz + cz*cx) \
         - 5.0*(cos(x*2) + cos(y*2) + cos(z*2)) - 14.0
-    elif type_surface == 'Skeletal_2':
+    elif type_surface == 'Skeletal 2':
         cx = cos(4*x)
         cy = cos(4*y)
         cz = cos(4*z)
@@ -150,13 +150,13 @@ def fun_schwarzP(type_surface, tam, spacing, hole_size):
         f = 10.0 * (sin(xo) * sin(yo) * sin(zo) + sin(xo) * cos(yo) * cos(zo) \
             + cos(xo) * sin(yo) * cos(zo)+ cos(xo) * cos(yo) * sin(zo)) \
             -  0.7*(cx + cy + cz) - 11.0
-    elif type_surface == 'Tubular_G':
+    elif type_surface == 'Tubular G':
         cx = cos(2*x)
         cy = cos(2*y)
         cz = cos(2*z)
         f = 10.0*(cos(x) * sin(y) + cos(y) * sin(z) + cos(z) * sin(x)) \
         -  0.5*(cx*cy + cy*cz + cz*cx) - 14.0
-    elif type_surface == 'Tubular_P':
+    elif type_surface == 'Tubular P':
         cx = cos(x)
         cy = cos(y)
         cz = cos(z)
@@ -182,6 +182,36 @@ def fun_schwarzP(type_surface, tam, spacing, hole_size):
         c4z = cos(4*z)
         f = 0.8*(s4x * sz * cyy + s4y * sx * czz + s4z * sy * cxx) \
             - 0.2 * (c4x * c4y + c4y * c4z + c4z * c4x)
+    elif  type_surface == "Double Diamond":
+        sx = sin(2*x)
+        sy = sin(2*y)
+        sz = sin(2*y)
+        cx = cos(2*x)
+        cy = cos(2*y)
+        cz = cos(2*z)
+        f = sx * sy + sy * sz + sx * sz + cx * cy * cz- 0.35
+    
+    elif  type_surface == "Double Gyroid":
+        sx = sin(2*x)
+        sy = sin(2*y)
+        sz = sin(2*y)
+        cx = cos(2*x)
+        cy = cos(2*y)
+        cz = cos(2*z)
+        f = 2.75 * ( sx * sin(z) * cos(y) + sy * sin(x) * cos(z) + sz * sin(y) * cos(x)) - (cx * cy + cy * cz  + cx * cz) - 0.35
+    
+    elif  type_surface == "Fischer-Koch S":
+        cx = cos(2*x)
+        cy = cos(2*y)
+        cz = cos(2*z)
+        f =  cx * sin(y) * cos(z) + cx * sin(z) * cos(x) + cz * sin(x) * cos(y) - 0.375
+
+    elif  type_surface == "Double Schwarz P":
+        cx = cos(2*x)
+        cy = cos(2*y)
+        cz = cos(2*z)
+        f =  0.5 * (cos(x) * cos(y) + cos(y) * cos(z) + cos(z) * cos(x)) + 0.2 * (cx + cy + cz) 
+
 
 
     #M=numpy.array(f)
@@ -227,19 +257,24 @@ class LeftPanel(wx.Panel):
         self.choose_scaffold = wx.ComboBox(self, -1, "Schwarz_P",\
                                          choices=(
                                              "Schwarz_P",\
-                                             "Schwarz_D",\
+                                             "Schwarz D",\
                                              "Gyroid",\
                                              "F-RD",\
                                              "Neovius",\
                                              "iWP",\
                                              'P_W_Hybrid',\
                                              "L-Type",\
-                                             'Skeletal_1',\
-                                             'Skeletal_2',\
-                                             'Tubular_G',\
-                                             'Tubular_P',\
+                                             'Skeletal 1',\
+                                             'Skeletal 2',\
+                                             'Tubular G',\
+                                             'Tubular P',\
                                              "I2-Y",\
-                                             "G'"),
+                                             "G'",\
+                                             "Double Gyroid",\
+                                             "Double Schwarz P",\
+                                             "Double Diamond",\
+                                             "Fischer-Koch S"        
+                                             ),
                                            style=wx.CB_READONLY)
 
 
