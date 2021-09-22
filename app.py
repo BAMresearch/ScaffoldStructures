@@ -295,8 +295,8 @@ class LeftPanel(wx.Panel):
         self.porosity_value_z.SetValue(1)
         
         self.spacing_value_x = FloatSliderText(self, -1, '', 0.2, 0.02, 0.5, 0.02)
-        self.hole_dimension_value1 = FloatSliderText(self, -1, 'Positive Direction', 0.3, 0.1, 1.1, 0.1)
-        self.hole_dimension_value2 = FloatSliderText(self, -1, 'Negative Direction', 0.3, 0.1, 1.1, 0.1)
+        self.hole_dimension_value1 = FloatSliderText(self, -1, 'Positive Direction', 0.3, 0.1, 3.14, 0.1)
+        self.hole_dimension_value2 = FloatSliderText(self, -1, 'Negative Direction', 0.3, 0.1, 3.14, 0.1)
 
         self.v_porosity = wx.StaticText(self, -1, "")
         self.Lx = wx.StaticText(self, -1, "")
