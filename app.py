@@ -23,9 +23,33 @@
 import sys
 import os
 import wx
-import vtk
 import h5py
-import numpy
+import numpy as np
+
+
+from vtkmodules.vtkCommonCore import vtkObject
+from vtkmodules.vtkFiltersSources import vtkConeSource, vtkSphereSource
+from vtkmodules.vtkRenderingAnnotation import vtkAxesActor
+from vtkmodules.vtkInteractionWidgets import vtkOrientationMarkerWidget
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    vtkDataSetMapper,
+    vtkRenderer,
+    vtkRenderWindow
+)
+from vtkmodules.vtkFiltersCore import (
+    vtkMarchingCubes, vtkWindowedSincPolyDataFilter
+)
+
+from vtkmodules.vtkIOGeometry import vtkSTLWriter
+
+from vtkmodules.vtkCommonDataModel import vtkImageData
+import vtkmodules.vtkRenderingOpenGL2
+
+
 
 
 from vtk.wx.wxVTKRenderWindowInteractor import wxVTKRenderWindowInteractor
@@ -65,7 +89,7 @@ def to_vtk(n_array, spacing, slice_number=0, orientation='AXIAL'):
     #     extent = (0, dx - 1, slice_number, slice_number + dy - 1, 0, dz - 1)
 
     # Generating the vtkImageData
-    image = vtk.vtkImageData()
+    image = vtkImageData()
     image.SetOrigin(0, 0, 0)
     image.SetSpacing(spacing)
     #  image.SetNumberOfScalarComponents(1)
@@ -215,10 +239,10 @@ def fun_schwarzP(type_surface, tam, spacing, hole_size):
 
 
     #M=numpy.array(f)
-    M = numpy.array(((f > -neg) & (f < pos)) * 1.0)
+    M = np.array(((f > -neg) & (f < pos)) * 1.0)
 
     #print M.shape, (i+2 for i in M.shape)
-    N = numpy.zeros([i+2 for i in M.shape])
+    N = np.zeros([i+2 for i in M.shape])
     N[1:-1, 1:-1, 1:-1] = M
     return N
 
@@ -240,11 +264,11 @@ class LeftPanel(wx.Panel):
         self.Show()
 
         # Error description
-        log_path = os.path.join('.', 'vtkoutput.txt')
-        fow = vtk.vtkFileOutputWindow()
-        fow.SetFileName(log_path)
-        ow = vtk.vtkOutputWindow()
-        ow.SetInstance(fow)
+        #log_path = os.path.join('.', 'vtkoutput.txt')
+        #fow = vtkFileOutputWindow()
+        #fow.SetFileName(log_path)
+        #ow = vtkOutputWindow()
+        #ow.SetInstance(fow)
         #-----------------------
 
 
@@ -406,14 +430,14 @@ class FrontView(wx.Panel):
     def __init__(self, parent, id, style):
         wx.Panel.__init__(self, parent, id, style=style)
 
-        self.renderer = vtk.vtkRenderer()
+        self.renderer = vtkRenderer()
         self.Interactor = wxVTKRenderWindowInteractor(self, -1, size=self.GetSize())
         self.Interactor.GetRenderWindow().AddRenderer(self.renderer)
         self.Interactor.Render()
 
 
 
-        istyle = vtk.vtkInteractorStyleTrackballCamera()
+        istyle = vtkInteractorStyleTrackballCamera()
 
         self.Interactor.SetInteractorStyle(istyle)
 
@@ -436,13 +460,12 @@ class FrontView(wx.Panel):
         pub.subscribe(self._calculate_porosity, 'Calculating porosity')
 
     def init_actor(self):
-        self.mapper = vtk.vtkPolyDataMapper()
+        self.mapper = vtkPolyDataMapper()
 
 
-        self.SurfaceActor = vtk.vtkActor()
+        self.SurfaceActor = vtkActor()
         self.SurfaceActor.SetMapper(self.mapper)
-        #ultimo para adionar actor
-        #exemplo
+
         self.renderer.AddActor(self.SurfaceActor)
 
         self.renderer.ResetCamera()
@@ -460,9 +483,9 @@ class FrontView(wx.Panel):
     def draw_surface(self, tipo='Schwarz_P', tam=None,
                      spacing=None, hole_size=None):
         if tam is None:
-            tam = 4*pi, 4*pi, 4*pi
+            tam = 2*pi, 2*pi, 2*pi
         if spacing is None:
-            spacing = 0.2, 0.2, 0.2
+            spacing = 0.1, 0.1, 0.1
         if hole_size is None:
             hole_size = 0.3, 0.3
         #print hole_size
@@ -471,7 +494,7 @@ class FrontView(wx.Panel):
 
         f = h5py.File("1.hdf5", "w")
         f['data'] = M
-        f['spacing'] = numpy.array(spacing)
+        f['spacing'] = np.array(spacing)
 
         self.M = M
         self.spacing = spacing
@@ -479,7 +502,7 @@ class FrontView(wx.Panel):
 
         image = to_vtk(M, spacing)
 
-        surf = vtk.vtkMarchingCubes()
+        surf = vtkMarchingCubes()
         surf.SetInputData(image)
         #surf.SetValue(0,0.5)
         surf.SetValue(0, 0.1)
@@ -487,7 +510,7 @@ class FrontView(wx.Panel):
         surf.ComputeGradientsOn()
         surf.Update()
 
-        subdiv = vtk.vtkWindowedSincPolyDataFilter()
+        subdiv = vtkWindowedSincPolyDataFilter()
         subdiv.SetInputData(surf.GetOutput())
         subdiv.SetNumberOfIterations(100)
         subdiv.SetFeatureAngle(120)
@@ -544,8 +567,8 @@ class FrontView(wx.Panel):
 
 
     def add_axes(self):
-        axes = vtk.vtkAxesActor()
-        self.marker = vtk.vtkOrientationMarkerWidget()
+        axes = vtkAxesActor()
+        self.marker = vtkOrientationMarkerWidget()
         self.marker.SetInteractor(self.Interactor)
         self.marker.SetOrientationMarker(axes)
         self.marker.SetViewport(0.75, 0, 1, 0.25)
@@ -554,7 +577,7 @@ class FrontView(wx.Panel):
 
 
     def write_model_stl(self, path):
-        write = vtk.vtkSTLWriter()
+        write = vtkSTLWriter()
         write.SetInputData(self.mapper.GetInput())
         write.SetFileTypeToBinary()
         write.SetFileName(path)
